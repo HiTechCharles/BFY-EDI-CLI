@@ -15,7 +15,7 @@ namespace EDI  //end of day Drawer counter command line interface
 "         Fives", "          Ones", "      Quarters",
 "         Dimes", "       Nickels", "       Pennies",
 " Quarter Rolls", "    Dime Rolls", "  Nickel Rolls",
-"   Penny Rolls", "Register Total"};
+"   Penny Rolls", "     POS Total"};
         public static double[] DollarAmounts = new Double[14];  //stores total dollar amount for each category
         public static double[] ValueAmounts = new Double[14];  //tracks number of bills and coins for each type
         public static double GrandTotal, diff;  //grand total, difference between register total and counted total
@@ -86,7 +86,7 @@ namespace EDI  //end of day Drawer counter command line interface
 
         static void GetAmounts(int Index)  //get amount for one category only, overload 1 of 2
         {
-            ValueAmounts[Index] = GetNumber(MoneyType[Index] + ":  ", 0, 99);  //print money type, takes input
+            ValueAmounts[Index] = GetNumber(MoneyType[Index] + ":  ", 0, 999);  //print money type, takes input
             DollarAmounts[Index] = ValueAmounts[Index] * Multiplier[Index];  //overwrites previous value
         }
 
@@ -132,20 +132,21 @@ namespace EDI  //end of day Drawer counter command line interface
             if (GrandTotal > RegisterTotal)  //drawer has extram money
             {
                 diff = GrandTotal - RegisterTotal;  //difference between values
-                DrawerState = "The drawer is over by $" + diff.ToString("n2");
+                DrawerState = "over by $" + diff.ToString("n2");
+
             }
             if (RegisterTotal > GrandTotal)  //drawer short
             {
                 diff = RegisterTotal - GrandTotal;
-                DrawerState ="The drawer is Short by $" + diff.ToString("n2");
+                DrawerState ="Short by $" + diff.ToString("n2");
             }
             if (RegisterTotal == GrandTotal)  //drawer matches register total
             {
-                DrawerState = "The Drawer is Perfect!";
+                DrawerState = "Perfect!";
             }
 
             //print results of comparison
-            Print("\n\nThe Grand Total is $" + GrandTotal + ".  " + DrawerState);
+            Print("\n\nThe Grand Total is $" + GrandTotal + ".  The register is " + DrawerState);
         }
 
         static void MakeChanges()  //make changes to a category if needed
@@ -159,7 +160,7 @@ namespace EDI  //end of day Drawer counter command line interface
                 Print("03 - Fives              04 - Ones                05 - Quarters");
                 Print("06 - Dimes              07 - Nickels             08 - Pennies");
                 Print("09 - Quarter Rolls      10 - Dime Rolls          11 - Nickel Rolls");
-                Print("12 - Penny Rolls        13 - Register Total      14 - Exit");
+                Print("12 - Penny Rolls        13 - POS Total           14 - Exit");
                 double Index = GetNumber("Choose an item to change from 0 to 14:  ", 0, 14);
                 if (Index >= 0 && Index < 14)  //value between 0 and 13
                 {
@@ -204,7 +205,7 @@ namespace EDI  //end of day Drawer counter command line interface
             TodayLog.WriteLine(end);  //print date
             TodayLog.WriteLine();
 
-            for (int Index = 0; Index < 12; Index++)  //loop through all money categories
+            for (int Index = 0; Index < 13; Index++)  //loop through all money categories
             {
                 if (DollarAmounts[Index] > 0)  //if value not zero,
                 {
@@ -213,14 +214,14 @@ namespace EDI  //end of day Drawer counter command line interface
                 }
             }
             TodayLog.WriteLine();
-            TodayLog.WriteLine("     Bills Total: $" + BillsTotal);  //write totals
-            TodayLog.WriteLine("     Coins Total: $" + CoinsTotal);
-            TodayLog.WriteLine("     Rolls Total: $" + RollsTotal);
-            TodayLog.WriteLine("     Grand Total: $" + GrandTotal);
-            TodayLog.WriteLine("  Register Total: $" + DollarAmounts[DollarAmounts.Length - 1]);
+            TodayLog.WriteLine("     Bills Total:  $" + BillsTotal);  //write totals
+            TodayLog.WriteLine("     Coins Total:  $" + CoinsTotal);
+            TodayLog.WriteLine("     Rolls Total:  $" + RollsTotal);
+            TodayLog.WriteLine("     Grand Total:  $" + GrandTotal);
+            TodayLog.WriteLine("       POS Total:  $" + DollarAmounts[DollarAmounts.Length - 1]);
             TodayLog.WriteLine("      Count Time:  " + TimeMessage);
-            TodayLog.WriteLine(DrawerState);
-            TodayLog.WriteLine("==============================");
+            TodayLog.WriteLine("   Drawer Status:  " + DrawerState);
+            TodayLog.WriteLine("==================================================");
             TodayLog.Close();  //close file, finished writing data
 
             //add contents of Todaylog and append it to FullLog
