@@ -224,7 +224,7 @@ namespace EDI  //end of day Drawer counter command line interface
             TodayLog.WriteLine("==================================================");
             TodayLog.Close();  //close file, finished writing data
 
-            //add contents of Todaylog and append it to FullLog
+            //add contents of Today log and append it to FullLog
             string TodayLogContents = File.ReadAllText(TodayLogPath);
             File.AppendAllText(FullLogPath, TodayLogContents);
         }
